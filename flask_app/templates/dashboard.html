@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename = 'main.css')}}">
+
+    <script
+    src="https://kit.fontawesome.com/c8e4d183c2.js"
+    crossorigin="anonymous"
+    ></script>
+</head>
+
+<body>
+    <div class="navbar">
+        <h1>Coding Dojo Wall</h1>
+        <div class="subnav">
+            <h2>Welcome {{loggedinuser.first_name}}</h2>
+            <h2 class="bottom-vav"><a href="/logout">Logout</a></h2>
+        </div>
+    </div>
+    <div></div>
+    <div class="main-cont">
+        <div class="left">
+                <div class="main-cont-nav">
+                <h2 class="messages-amount"> {{total_length}} Messages for you</h2>
+            </div>
+            <div class="messaegs-c">
+                {% for m in message %}
+                <div class="top">
+                    {% if m.reciver_id == loggedinuser.id %}
+                    <div class="link">
+                        <h5 class="space" >{{m.sender.first_name}} said </h5>
+                        {% if not m.reciver_id %}
+                        {% endif%}
+                        <a class="yes" href="/delete/{{m.id}}"><i class="fas fa-trash"></i></a>
+                    </div>
+                    <div></div>
+                    <h4 class="none">{{m.content}}</h4>
+                    {%endif%}
+                </div>
+                    {%endfor%}
+                </div>
+        </div>
+            
+            <div class="right">
+                <div class="main-cont-nav-right">
+                    <h2 class="messages-amount">Send messages</h2>
+                    <h3>You sent
+                        {{rec_len}}
+                        messages so far</h3>
+                </div>
+                <div class="message-send">
+
+                    {%for i in users %}
+                    {% if not i.id == loggedinuser.id %}
+                    <form action="/create/post" method="post">
+                        <label class="name">{{i.first_name}}</label>
+                        <input type="hidden" name="sender_id" value="{{loggedinuser.id}}">
+                        <input type="hidden" name="reciver_id" value="{{i.id}}">
+                        <div class="burh">
+                            <textarea name="content"></textarea>
+                            <input class="button" type="submit" value="Submit">
+                        </div>
+                    </form>
+                    {%endif%}
+                    {% endfor %}
+                </div>
+            </div>
+    </div>
+    
+</body>
+
+</html>
